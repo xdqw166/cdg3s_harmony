@@ -1,4 +1,9 @@
 import { LengthUnit } from "@kit.ArkUI"
+import { GoodsInfo } from "../data/type"
+import hilog from "@ohos.hilog"
+import { FeaturedRecommendDataSource } from "../data/FeaturedRecommendDataSource"
+
+const DOMAIN = 0x0001
 
 @Component
 export struct HomeMainPageContent {
@@ -92,27 +97,27 @@ export struct HomeMainPageContent {
     {
       "name": "Xiaomi 17 Max",
       "desc": "至高享12期免息 >",
-      "image": $r("app.media.xiaomi_17_max")
+      "image": $r("app.media.phone_xiaomi_17_max")
     },
     {
       "name": "REDMI 17C",
       "desc": "至高优惠200元 >",
-      "image": $r("app.media.redmi_17c")
+      "image": $r("app.media.phone_redmi_17c")
     },
     {
       "name": "Note 15 系列",
       "desc": "到手价999元起 >",
-      "image": $r("app.media.note_15_series")
+      "image": $r("app.media.phone_note_15_series")
     },
     {
       "name": "K90",
       "desc": "至高优惠300元 >",
-      "image": $r("app.media.k90")
+      "image": $r("app.media.phone_k90")
     },
     {
       "name": "Turbo 5 Max",
       "desc": "至高优惠200元 >",
-      "image": $r("app.media.turbo_5_max")
+      "image": $r("app.media.phone_turbo_5_max")
     }
   ]
   @State swiperSmartGadgets: Record<string, string | Resource>[] = [
@@ -159,6 +164,7 @@ export struct HomeMainPageContent {
       "image": $r("app.media.redmi_g24q")
     }
   ]
+  @State private FeaturedRecommendDataSource: FeaturedRecommendDataSource = new FeaturedRecommendDataSource()
   @Consume navPathStack: NavPathStack
   onAdBgChange?: (isDark: boolean) => void
   onScrolledUpSomeDistance ?: (isMoreThan: boolean) => void
@@ -536,6 +542,61 @@ export struct HomeMainPageContent {
     .rowsGap(5)
   }
 
+  @Builder
+  buildFeaturedRecommendations() {
+    this.buildTitle("精选推荐", false)
+    WaterFlow() {
+      LazyForEach(this.FeaturedRecommendDataSource, (item: GoodsInfo) => {
+        FlowItem() {
+          Column() {
+            Image(item.image)
+              .width("100%")
+              .objectFit(ImageFit.Auto)
+            Column() {
+              Text(item.name)
+                .fontWeight(FontWeight.Medium)
+              Text(item.desc)
+                .fontSize(11)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .fontColor($r("app.color.font_sub"))
+              Blank().height(10)
+              Row() {
+                Text(`￥${item.price}`)
+                  .fontWeight(FontWeight.Medium)
+                if (item.isStartingPrice) {
+                  Text("起")
+                    .fontSize(13)
+                    .fontWeight(FontWeight.Medium)
+                }
+                if (item.originalPrice) {
+                  Blank().width(2)
+                  Text(`￥${item.originalPrice}`)
+                    .fontSize(14)
+                    .fontColor($r("app.color.font_unimportant"))
+                    .decoration({
+                      type: TextDecorationType.LineThrough,
+                      color: $r("app.color.font_unimportant")
+                    })
+                }
+                Blank().layoutWeight(1)
+              }
+              .alignItems(VerticalAlign.Bottom)
+            }
+            .alignItems(HorizontalAlign.Start)
+            .backgroundColor("#f8f8f8")
+            .width("100%")
+            .padding(10)
+          }
+        }
+        .backgroundColor($r("app.color.background"))
+        .borderRadius(10)
+      })
+    }
+    .columnsTemplate("1fr 1fr")
+    .columnsGap(10)
+    .rowsGap(10)
+  }
+
   build() {
     Stack({ alignContent: Alignment.Top }) {
       Scroll() {
@@ -552,12 +613,21 @@ export struct HomeMainPageContent {
             left: 10,
             right: 10
           })
+          Stack({ alignContent: Alignment.Top }) {
+            Column()
+              .linearGradient({
+                colors: [[$r("app.color.background"), 0], [$r("app.color.bg_gradient"), 1]]
+              })
+              .width("100%")
+              .height(100)
+            Column() {
+              this.buildFeaturedRecommendations()
+            }
+            .padding({ left: 10, right: 10 })
+          }
+          .backgroundColor("#f3f3f3")
         }
         .width("100%")
-
-        // .linearGradient({
-        //   colors: [[$r("app.color.background"), 0], [$r("app.color.bg_gradient"), 1]]
-        // })
       }
       .onDidScroll((_xOffset: number, yOffset: number) => {
         this.totalScrollOffset += yOffset
@@ -568,6 +638,13 @@ export struct HomeMainPageContent {
       })
       .margin({ top: -this.adsOffset })
       .scrollBar(BarState.Off)
+      .onReachEnd(() => {
+        // 使用 concat 或展开运算符创建新数组
+        this.FeaturedRecommendDataSource.pushData(
+          this.FeaturedRecommendDataSource.getDataArray()
+        )
+        hilog.info(DOMAIN, "load", "loading content")
+      })
 
       // 固定搜索栏
       Column() {

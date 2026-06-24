@@ -21,6 +21,10 @@
       "value": "#666666"
     },
     {
+      "name": "font_unimportant",
+      "value": "#999999"
+    },
+    {
       "name": "popular_phone_bg",
       "value": "#ecf4f7"
     },

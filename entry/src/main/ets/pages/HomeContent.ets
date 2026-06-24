@@ -81,7 +81,7 @@ export struct HomeContent {
     })
     .barWidth("70%")
     .clip(this.needShowTabBg)
-    .margin({top: 50})
+    .margin({top: $r("app.integer.safe_area_top")})
   }
 }
 

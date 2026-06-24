@@ -1,7 +1,6 @@
 import { LengthUnit } from "@kit.ArkUI"
 
 @Component
-@Preview
 export struct HomeMainPageContent {
   // ad5 是手机端图片，其余非手机端
   @State ads: string[] | Resource[] = [
@@ -160,7 +159,7 @@ export struct HomeMainPageContent {
       "image": $r("app.media.redmi_g24q")
     }
   ]
-
+  @Consume navPathStack: NavPathStack
   onAdBgChange?: (isDark: boolean) => void
   onScrolledUpSomeDistance ?: (isMoreThan: boolean) => void
   private timer: number = -1
@@ -263,7 +262,7 @@ export struct HomeMainPageContent {
     }
     .scrollable(ScrollDirection.Horizontal)
     .width("100%")
-    .margin({left: 5, right: 5})
+    .margin({ left: 5, right: 5 })
     .scrollBar(BarState.On)
     .scrollBarMargin({
       start: { value: 135, unit: LengthUnit.VP },
@@ -314,7 +313,7 @@ export struct HomeMainPageContent {
           .fontWeight(FontWeight.Bold)
         Text("限量立减至高100元 >")
           .fontSize(11)
-          .margin({top: 3})
+          .margin({ top: 3 })
       }
       .layoutGravity(LocalizedAlignment.TOP_START)
       .alignItems(HorizontalAlign.Start)
@@ -353,7 +352,7 @@ export struct HomeMainPageContent {
         .fontSize(12)
       Text(subtitle)
         .fontSize(10)
-        .margin({top: 2})
+        .margin({ top: 2 })
         .fontColor($r("app.color.font_sub"))
       Image(image)
         .align(Alignment.Bottom)
@@ -362,7 +361,7 @@ export struct HomeMainPageContent {
     }
     .width(90)
     .padding(5)
-    .margin({top: 10, bottom: 10, right: 10})
+    .margin({ top: 10, bottom: 10, right: 10 })
     .borderRadius(5)
     .backgroundColor("#ffffff")
     .layoutWeight(1)
@@ -376,7 +375,9 @@ export struct HomeMainPageContent {
     Row() {
       Text(title).fontWeight(FontWeight.Medium)
       Blank().layoutWeight(1)
-      if (hasMore) Text("更多 >").fontSize(14).fontColor($r("app.color.font_sub"))
+      if (hasMore) {
+        Text("更多 >").fontSize(14).fontColor($r("app.color.font_sub"))
+      }
     }
     .margin({
       top: 10,
@@ -411,7 +412,7 @@ export struct HomeMainPageContent {
     .height(270)
     .backgroundColor($r("app.color.popular_phone_bg"))
     .borderRadius(10)
-    .padding({left: 10, right: 10})
+    .padding({ left: 10, right: 10 })
   }
 
   @Builder
@@ -427,13 +428,14 @@ export struct HomeMainPageContent {
       .borderRadius(100)
       .borderWidth(1)
       .width("100%")
-      .padding({top: 5, bottom: 5})
-      .margin({top: 5})
+      .padding({ top: 5, bottom: 5 })
+      .margin({ top: 5 })
+
       Image(phone["image"])
         .layoutWeight(1)
         .width("100%")
         .objectFit(ImageFit.Auto)
-        .padding({left: 10, right: 10})
+        .padding({ left: 10, right: 10 })
     }
     .width("50%")
     .height("75%")
@@ -456,7 +458,7 @@ export struct HomeMainPageContent {
       Text(phone["desc"])
         .fontSize(10)
         .fontColor($r("app.color.font_sub"))
-        .margin({top: 1})
+        .margin({ top: 1 })
     }
     .layoutWeight(1)
     .padding(10)
@@ -484,12 +486,17 @@ export struct HomeMainPageContent {
                 .layoutWeight(1)
             }
             .padding(20)
+            .onClick(() => {
+              this.navPathStack.pushPathByName("GoodsDetails", null)
+            })
           })
         }
         .autoPlay(true)
       }
-      .columnStart(0).columnEnd(0)
-      .rowStart(0).rowEnd(1)
+      .columnStart(0)
+      .columnEnd(0)
+      .rowStart(0)
+      .rowEnd(1)
       .backgroundColor($r("app.color.smart_gadget_bg"))
       .borderRadius(10)
 
@@ -529,10 +536,6 @@ export struct HomeMainPageContent {
     .rowsGap(5)
   }
 
-  @Builder
-  buildSmartGadgetsSwiper() {
-  }
-
   build() {
     Stack({ alignContent: Alignment.Top }) {
       Scroll() {
@@ -551,6 +554,7 @@ export struct HomeMainPageContent {
           })
         }
         .width("100%")
+
         // .linearGradient({
         //   colors: [[$r("app.color.background"), 0], [$r("app.color.bg_gradient"), 1]]
         // })
@@ -564,6 +568,7 @@ export struct HomeMainPageContent {
       })
       .margin({ top: -this.adsOffset })
       .scrollBar(BarState.Off)
+
       // 固定搜索栏
       Column() {
         this.buildSearchBar()

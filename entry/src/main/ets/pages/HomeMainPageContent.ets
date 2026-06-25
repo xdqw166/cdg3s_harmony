@@ -1,5 +1,5 @@
 import { LengthUnit } from "@kit.ArkUI"
-import { GoodsInfo } from "../data/type"
+import { GoodsInfo } from "../data/entity"
 import hilog from "@ohos.hilog"
 import { FeaturedRecommendDataSource } from "../data/FeaturedRecommendDataSource"
 

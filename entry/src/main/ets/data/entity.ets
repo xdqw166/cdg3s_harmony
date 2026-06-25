@@ -8,3 +8,8 @@ export interface GoodsInfo {
   image: string | Resource
   desc: string | Resource
 }
+
+export interface Classification {
+  id: number,
+  name: string
+}

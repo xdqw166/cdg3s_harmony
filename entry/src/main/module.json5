@@ -2,6 +2,9 @@
   "module": {
     "name": "entry",
     "type": "entry",
+    "requestPermissions": [{
+      "name": "ohos.permission.INTERNET"
+    }],
     "routerMap": "$profile:route_map",
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",

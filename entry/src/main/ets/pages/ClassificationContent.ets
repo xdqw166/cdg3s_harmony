@@ -1,16 +1,13 @@
 import hilog from "@ohos.hilog"
+import { ClassificationRootDataSource } from "../data/ClassificationRootDataSource"
+import { Classification } from "../data/entity"
 
 const DOMAIN = 0x0002
 
 @Component
 export struct ClassificationContent {
   @State selection: number = 0
-  @State classificationNames: string[] = [
-    '推荐', 'Xiaomi手机', 'REDMI手机', '手机配件', '平板',
-    '智能穿戴', '电脑办公', '电视', '空调', '洗衣机',
-    '冰箱', '厨房大电', '小家电', '智能家居', '出行运动',
-    '车周边', '日用百货', '小米服务', '儿童用品', '有品精选'
-  ]
+  @State private rootDataSource: ClassificationRootDataSource = new ClassificationRootDataSource()
 
   @Builder
   buildClassification(index: number, name: string | Resource) {
@@ -31,6 +28,11 @@ export struct ClassificationContent {
       hilog.info(DOMAIN, 'select', `selected index: ${index}`)
     })
     .height(50)
+  }
+
+  @Builder
+  buildClassificationContent() {
+
   }
 
   build() {
@@ -63,10 +65,11 @@ export struct ClassificationContent {
       .alignItems(VerticalAlign.Center)
 
       Row() {
+        // 左侧
         Scroll() {
           Column() {
-            ForEach(this.classificationNames, (name: string, index: number) => {
-              this.buildClassification(index, name)
+            LazyForEach(this.rootDataSource, (item: Classification , index: number) => {
+              this.buildClassification(index, item.name)
             })
           }
         }
@@ -74,8 +77,10 @@ export struct ClassificationContent {
         .height('100%')
         .scrollBar(BarState.Off)
 
+        // 右侧
         Scroll() {
-
+          Column() {
+          }
         }
         .layoutWeight(2)
       }

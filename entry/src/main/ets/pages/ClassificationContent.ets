@@ -28,9 +28,11 @@ export struct ClassificationContent {
     .onClick(() => {
       this.selection = index
       this.childSelection = 0
-      const selectionId = this.rootDataSource.getData(index).id
-      this.dataSource.reloadWithId(selectionId)
-      hilog.info(DOMAIN, 'select', `selection id: ${selectionId}`)
+      if (index >= 0) {
+        const selectionId = this.rootDataSource.getData(index).id
+        this.dataSource.reloadWithId(selectionId)
+        hilog.info(DOMAIN, 'select', `selection id: ${selectionId}`)
+      }
     })
     .height(50)
   }

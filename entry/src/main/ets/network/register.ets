@@ -3,18 +3,18 @@ import { RegisterRequest, RegisterResponse } from "./dto"
 import { http } from "@kit.NetworkKit"
 
 export interface RegisterAttribute {
-  userName: string,
+  username: string
   password: string
-  onSuccess?: (msg: string) => void,
+  onSuccess?: (msg: string) => void
   onFail?: (msg: string) => void
 }
 
 export function register(attr: RegisterAttribute) {
-  const url = `http://${HOST}/user/register`
+  const url = `http://${HOST}/auth/register`
   const httpRequest = http.createHttp()
 
   const requestData: RegisterRequest = {
-    username: attr.userName,
+    username: attr.username,
     password: attr.password
   }
 
@@ -39,7 +39,7 @@ export function register(attr: RegisterAttribute) {
         if (attr.onFail) attr.onFail(response.message || '注册失败')
       }
     } catch (e) {
-      if (attr.onFail) attr.onFail('注册失败，请稍后重试')
+      if (attr.onFail) attr.onFail(`注册失败：${e}`)
     }
   })
 }

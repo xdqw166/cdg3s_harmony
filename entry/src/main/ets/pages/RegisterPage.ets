@@ -88,7 +88,7 @@ struct RegisterPage {
             .fontWeight(FontWeight.Medium)
             .onClick(() => {
               register({
-                userName: this.userName,
+                username: this.userName,
                 password: this.psw1,
                 onSuccess: (msg: string) => {
                   this.showToast(msg)

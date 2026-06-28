@@ -1,4 +1,4 @@
-import { setWindowSystemBarColor } from "../utils"
+import { setWindowSystemBarColor } from "../utils/ui"
 import { HomeMainPageContent } from "./HomeMainPageContent"
 
 @Component

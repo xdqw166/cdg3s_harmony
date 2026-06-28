@@ -1,9 +1,20 @@
+export interface RegisterRequest {
+  username: string
+  password: string
+}
+
 export interface RegisterResponse {
-  success: boolean,
+  success: boolean
   message: string
 }
 
-export interface RegisterRequest {
-  username: string,
+export interface LoginRequest {
+  username: string
   password: string
+}
+
+export interface LoginResponse {
+  success: boolean
+  message: string
+  token: string
 }

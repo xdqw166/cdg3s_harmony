@@ -9,9 +9,13 @@ export function setWindowSystemBarColor(color: string) {
     data: {
       contentColor: color
     }
-  });
+  })
 }
 
-export function isBlank(str: string): boolean {
-  return str.trim().length === 0;
+export function showToast(message: string, uiContest: UIContext) {
+  try {
+    uiContest.getPromptAction().showToast({ message })
+  } catch (error) {
+    hilog.error(DOMAIN, 'winSys', error)
+  }
 }

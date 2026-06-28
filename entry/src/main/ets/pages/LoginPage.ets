@@ -1,9 +1,11 @@
-import { isBlank } from '../utils'
+import { login } from '../network/login'
+import { isBlank } from '../utils/base'
+import { showToast } from '../utils/ui'
 
 @Component
 struct LoginPage {
   @State agreement: boolean = false
-  @State userName: string = ''
+  @State username: string = ''
   @State psw: string = ''
 
   @Consume navPathStack: NavPathStack
@@ -28,7 +30,7 @@ struct LoginPage {
             .height(50)
             .width('100%')
             .onChange((userName: string) => {
-              this.userName = userName
+              this.username = userName
             })
           Blank().height(20)
           TextInput({
@@ -60,9 +62,19 @@ struct LoginPage {
             .backgroundColor($r('app.color.theme'))
             .fontWeight(FontWeight.Medium)
             .onClick(() => {
-              // TODO 登录逻辑
+              login({
+                username: this.username,
+                password: this.psw,
+                onSuccess: (msg: string) => {
+                  showToast(msg, this.getUIContext())
+                  this.navPathStack.pop()
+                },
+                onFail: (msg: string) => {
+                  showToast(msg, this.getUIContext())
+                }
+              })
             })
-            .enabled(this.agreement && !isBlank(this.userName) && !isBlank(this.psw))
+            .enabled(this.agreement && !isBlank(this.username) && !isBlank(this.psw))
           Blank().height(20)
           Button('注册')
             .height(50)

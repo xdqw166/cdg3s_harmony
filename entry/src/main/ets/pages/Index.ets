@@ -1,4 +1,4 @@
-import { setWindowSystemBarColor } from '../utils';
+import { setWindowSystemBarColor } from '../utils/ui';
 import { ClassificationContent } from './ClassificationContent';
 import { HomeContent } from './HomeContent';
 import { ProfileContent } from './ProfileContent';

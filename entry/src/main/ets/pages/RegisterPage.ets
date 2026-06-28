@@ -1,6 +1,6 @@
-import { isBlank } from "../utils"
-import { hilog } from "@kit.PerformanceAnalysisKit"
+import { isBlank } from "../utils/base"
 import { register } from "../network/register"
+import { showToast } from "../utils/ui"
 
 const DOMAIN = 0x0006
 
@@ -12,13 +12,6 @@ struct RegisterPage {
   @State psw2: string = ''
   @State isSamePsw: boolean = true
   @Consume navPathStack: NavPathStack
-  private showToast = (message: string) => {
-    try {
-      this.getUIContext().getPromptAction().showToast({ message })
-    } catch (error) {
-      hilog.error(DOMAIN, 'winSys', error)
-    }
-  }
 
   build() {
     NavDestination() {
@@ -91,11 +84,11 @@ struct RegisterPage {
                 username: this.userName,
                 password: this.psw1,
                 onSuccess: (msg: string) => {
-                  this.showToast(msg)
+                  showToast(msg, this.getUIContext())
                   this.navPathStack.pop()
                 },
                 onFail: (msg: string) => {
-                  this.showToast(msg)
+                  showToast(msg, this.getUIContext())
                 }
               })
             })
